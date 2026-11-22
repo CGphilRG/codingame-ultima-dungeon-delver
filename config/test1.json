@@ -1,0 +1,9 @@
+{
+  "title": {
+    "2": "1. Dungeon of Despise",
+    "1": "1. Donjon de Despise"
+  },
+  "testIn": "#############\n#S..C...#..C#\n#.###.#.#.#.#\n#...M.#...R.#\n###.#.#####.#\n#C..#...F...#\n#.#####.#.###\n#...M...#..C#\n#.#.###.###.#\n#C#.....M..E#\n#############",
+  "isTest": "true",
+  "isValidator": "true"
+}

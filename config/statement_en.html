@@ -1,0 +1,129 @@
+<div class="statement-body">
+  <!-- GOAL -->
+  <div class="statement-section statement-goal">
+    <h1><span class="icon icon-goal">&nbsp;</span><span>The Goal</span></h1>
+    <div class="statement-goal-content">
+      Solo Optimization puzzle inspired by <i>Ultima IV: Quest of the Avatar</i>. Guide the <b>Avatar</b> through a perilous dungeon, cast Britannian runic spells (<action>FLAM_POR</action> and <action>MANI</action>), collect as much <b>Gold</b> and <b>Virtue Relics</b> as possible, and extract via the <b>Exit Stairs</b> before your torchlight burns out!
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="statement-section statement-rules">
+    <h1><span class="icon icon-rules">&nbsp;</span><span>Rules</span></h1>
+    <div class="statement-rules-content">
+      <p>The dungeon is a <const>13</const>&times;<const>11</const> grid of walkable stone tiles (<const>.</const>) and impassable walls (<const>#</const>). The Avatar starts with:</p>
+      <ul>
+        <li><b>HP (Hit Points):</b> <const>40</const> / <const>40</const></li>
+        <li><b>MP (Mana Points):</b> <const>20</const></li>
+        <li><b>Torchlight:</b> <const>65</const> turns (decreases by <const>1</const> at the start of every turn)</li>
+        <li><b>Gold:</b> <const>0</const> (your optimization score criterion)</li>
+      </ul>
+
+      <h3 style="font-size: 16px; font-weight: 700; padding-top: 10px">Dungeon Entities</h3>
+      <ul>
+        <li><b><const>C</const> — Treasure Chest (<const>25</const> Gold, <const>0</const> HP):</b> Collected automatically when the Avatar steps onto its tile.</li>
+        <li><b><const>R</const> — Virtue Relic (<const>60</const> Gold, <const>15</const> Guardian HP):</b> Guarded by an ancient spirit (<var>entityHp</var> = <const>15</const>). While <var>entityHp</var> &gt; <const>0</const>, it deals <const>4</const> damage per turn if adjacent (Manhattan distance &le; <const>1</const>). Once its HP is reduced to <const>0</const>, stepping onto its tile claims the Relic for <b>+<const>60</const> Gold</b>.</li>
+        <li><b><const>M</const> — Dungeon Monster (<const>20</const> Gold, <const>15</const> HP):</b> Deals <const>4</const> damage per turn when at Manhattan distance &le; <const>1</const> from the Avatar. Slaying a Monster immediately awards <b>+<const>20</const> Gold</b>.</li>
+        <li><b><const>F</const> — Healing Fountain (<const>0</const> Gold, <const>0</const> HP):</b> Stepping onto a Fountain restores <b>+<const>18</const> HP</b> (up to <const>40</const>) and replenishes <b>+<const>10</const> Torchlight</b> turns.</li>
+        <li><b><const>E</const> — Exit Stairs (<const>50</const> Gold + remaining Torchlight bonus):</b> Stepping onto the Exit Stairs immediately completes the dungeon run and awards <b>+<const>50</const> Gold</b> plus <b>+<const>1</const> Gold per remaining Torchlight turn</b>!</li>
+      </ul>
+
+      <h3 style="font-size: 16px; font-weight: 700; padding-top: 10px">Avatar Actions &amp; Runic Spells</h3>
+      <p>Each turn, the Avatar moves <const>1</const> step orthogonal along the shortest walkable path toward (<var>x</var>, <var>y</var>) via <action>MOVE x y</action>, and may optionally perform one combat or magic action:</p>
+      <ul>
+        <li><action>STRIKE tx ty</action> (<const>0</const> MP, range <const>1</const>): Melee strike dealing <const>8</const> damage to the Monster or Relic Guardian at (<var>tx</var>, <var>ty</var>).</li>
+        <li><action>FLAM_POR tx ty</action> (<const>5</const> MP, range &le; <const>3</const>): Britannian fireball spell dealing <const>15</const> damage to the Monster or Relic Guardian at (<var>tx</var>, <var>ty</var>) (instantly slaying a full-HP Monster or Guardian).</li>
+        <li><action>MANI</action> (<const>4</const> MP, self): Britannian healing spell restoring <b>+<const>14</const> HP</b> (up to <const>40</const>).</li>
+      </ul>
+
+      <h3 style="font-size: 16px; font-weight: 700; padding-top: 10px">Viewer Debug Mode</h3>
+      <p>Use the <b>RENDER MODE</b> toggle in the viewer settings menu to switch between <b>RPG SPRITES</b> (2D RPG sprites with dynamic Torchlight halo) and <b>GEOMETRIC DEBUG</b> (color-coded geometric shapes with entity type codes).</p>
+
+      <!-- VICTORY CONDITIONS -->
+      <div class="statement-victory-conditions">
+        <div class="icon victory"></div>
+        <div class="blk">
+          <div class="title">Victory Conditions</div>
+          <div class="text">
+            <ul style="padding-bottom:0">
+              <li>Reach the <b>Exit Stairs (<const>E</const>)</b> before running out of HP, Torchlight, or turns, while maximizing your total <b>Gold</b> collected.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEFEAT CONDITIONS -->
+      <div class="statement-lose-conditions">
+        <div class="icon lose"></div>
+        <div class="blk">
+          <div class="title">Defeat Conditions</div>
+          <div class="text">
+            <ul style="padding-bottom:0">
+              <li>Your <var>hp</var> drops to <const>0</const> or your <var>torch</var> reaches <const>0</const>.</li>
+              <li>You fail to reach the Exit Stairs within <const>70</const> turns or your program times out.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROTOCOL -->
+  <div class="statement-section statement-protocol">
+    <h1><span class="icon icon-protocol">&nbsp;</span><span>Game Input</span></h1>
+    <div class="blk">
+      <div class="title">Initialization Input</div>
+      <div class="text">
+        <p><span class="statement-lineno">Line 1:</span> 2 space-separated integers <var>width</var> and <var>height</var>, the width (<const>13</const>) and height (<const>11</const>) of the dungeon grid.</p>
+      </div>
+    </div>
+    <div class="blk">
+      <div class="title">Input for One Game Turn</div>
+      <div class="text">
+        <p><span class="statement-lineno">Line 1:</span> 6 space-separated integers <var>avatarX</var>, <var>avatarY</var>, <var>hp</var>, <var>mp</var>, <var>torch</var> and <var>gold</var>, the Avatar's current coordinates, Hit Points, Mana Points, remaining Torchlight turns, and collected Gold.</p>
+        <p><span class="statement-lineno">Next <var>height</var> lines:</span> a string <var>row</var> of length <var>width</var> representing one row of the dungeon (<const>.</const> for floor, <const>#</const> for wall).</p>
+        <p><span class="statement-lineno">Next line:</span> an integer <var>entityCount</var>, the number of active entities remaining in the dungeon.</p>
+        <p><span class="statement-lineno">Next <var>entityCount</var> lines:</span> 6 space-separated values <var>entityId</var>, <var>type</var>, <var>x</var>, <var>y</var>, <var>value</var> and <var>entityHp</var>:</p>
+        <ul>
+          <li><var>entityId</var>: unique integer ID of the entity.</li>
+          <li><var>type</var>: character code (<const>C</const> = Chest, <const>R</const> = Virtue Relic, <const>M</const> = Monster, <const>F</const> = Fountain, <const>E</const> = Exit Stairs).</li>
+          <li><var>x</var>, <var>y</var>: integer coordinates of the entity.</li>
+          <li><var>value</var>: integer Gold value awarded upon collecting or slaying this entity.</li>
+          <li><var>entityHp</var>: remaining integer HP of the Monster or Relic Guardian (<const>0</const> if unguarded).</li>
+        </ul>
+      </div>
+    </div>
+    <div class="blk">
+      <div class="title">Output for One Game Turn</div>
+      <div class="text">
+        <p><span class="statement-lineno">A single line</span> containing a movement command optionally followed by an action:</p>
+        <ul>
+          <li><action>MOVE x y</action></li>
+          <li><action>MOVE x y STRIKE tx ty</action></li>
+          <li><action>MOVE x y FLAM_POR tx ty</action></li>
+          <li><action>MOVE x y MANI</action></li>
+        </ul>
+        <p>Example: <action>MOVE 6 5 FLAM_POR 7 5</action></p>
+      </div>
+    </div>
+    <div class="blk">
+      <div class="title">Constraints</div>
+      <div class="text">
+        <var>width</var> = <const>13</const>, <var>height</var> = <const>11</const><br>
+        <const>1</const> &le; <var>entityCount</var> &le; <const>15</const><br>
+        Response time for the first turn &le; <const>1000</const> ms<br>
+        Response time per turn &le; <const>50</const> ms<br>
+        Maximum number of turns: <const>70</const>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOURCE CODE -->
+  <div class="statement-section statement-examples">
+    <h1><span class="icon icon-example">&nbsp;</span><span>Source Code</span></h1>
+    <div class="statement-examples-text">
+      The complete source code of the referee, Dual-Mode PixiJS viewer, and reference bots is available on GitHub:
+      <a href="https://github.com/codingame-team/codingame-ultima-dungeon-delver" target="_blank" rel="noopener noreferrer">https://github.com/codingame-team/codingame-ultima-dungeon-delver</a>
+    </div>
+  </div>
+</div>

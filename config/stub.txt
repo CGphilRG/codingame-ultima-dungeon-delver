@@ -1,0 +1,31 @@
+read width:int height:int
+gameloop
+read avatarX:int avatarY:int hp:int mp:int torch:int gold:int
+loop height read row:word(16)
+read entityCount:int
+loop entityCount read entityId:int type:word(2) x:int y:int value:int entityHp:int
+write join("MOVE", "11", "5")
+
+STATEMENT
+Guide the Avatar through the Stygian Abyss! Maximize the Gold and Virtue Relics extracted before your Torch runs out.
+
+INPUT
+width: Width of the dungeon (13)
+height: Height of the dungeon (11)
+avatarX: Avatar X coordinate
+avatarY: Avatar Y coordinate
+hp: Current Hit Points (max 40)
+mp: Current Mana Points
+torch: Remaining turns of Torchlight
+gold: Current Gold collected
+row: One row of the dungeon ('.'=floor, '#'=wall)
+entityCount: Number of active dungeon entities
+entityId: Unique entity ID
+type: 'C'=Chest, 'R'=Virtue Relic, 'M'=Monster, 'F'=Fountain, 'E'=Exit Stairs
+x: Entity X coordinate
+y: Entity Y coordinate
+value: Gold value of the entity
+entityHp: Remaining Guardian/Monster HP (0 if unguarded)
+
+OUTPUT
+One line: MOVE <x> <y> [STRIKE <tx> <ty> | FLAM_POR <tx> <ty> | MANI]
