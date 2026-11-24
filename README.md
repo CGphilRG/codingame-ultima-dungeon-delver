@@ -18,5 +18,5 @@ Un puzzle d'optimisation solo inspiré d'**Ultima IV Maker** et **Dungeon Crawle
 
 - **CodinGame Contribution**: https://www.codingame.com/contribute/view/158680d08ca9d3d2323c3495364e30863bbe90
 - **Play in CodinGame IDE**: https://www.codingame.com/ide/demo/1605775f633efb9245a42848603a5d4018881dc
-- **GitHub Repository**: https://github.com/codingame-team/codingame-ultima-dungeon-delver
-- **6-Puzzle Showcase Hub (GitHub Pages)**: https://codingame-team.github.io/codingame-sdk-puzzles/
+- **GitHub Repository**: https://github.com/CGphilRG/codingame-ultima-dungeon-delver
+- **6-Puzzle Showcase Hub (GitHub Pages)**: https://cgphilrg.github.io/codingame-sdk-puzzles/
